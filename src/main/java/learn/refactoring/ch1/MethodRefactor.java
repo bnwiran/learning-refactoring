@@ -43,6 +43,9 @@ public class MethodRefactor {
         var statementData = new StatementData();
         statementData.customer = customer;
         statementData.performances = performances;
+        statementData.totalAmount = totalAmount(statementData);
+        statementData.totalVolumeCredits = totalVolumeCredits(statementData);
+
         return renderPlainText(statementData);
     }
 
@@ -69,9 +72,9 @@ public class MethodRefactor {
                     performance.getInt("audience")));
         }
 
-        var totalAmount = totalAmount(statementData);
+        var totalAmount = statementData.totalAmount;
         result.append(String.format("Amount owed is %s\n", usd(totalAmount/100.0)));
-        result.append(String.format("You earned %f credits\n", totalVolumeCredits(statementData)));
+        result.append(String.format("You earned %f credits\n", statementData.totalVolumeCredits));
 
         return result.toString();
     }
