@@ -57,7 +57,7 @@ public class MethodRefactor {
 
             // print line for this order
             result.append(String.format("  %s: %s (%d seats)\n", performance.getJSONObject("play").getString("name"),
-                    usd(amountFor(performance)/100.0),
+                    usd(performance.getDouble("amount")/100.0),
                     performance.getInt("audience")));
         }
 
@@ -73,7 +73,7 @@ public class MethodRefactor {
 
         for (Object perfObj : statementData.performances) {
             var performance = (JSONObject) perfObj;
-            result += amountFor(performance);
+            result += performance.getDouble("amount");
         }
 
         return result;
