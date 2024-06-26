@@ -15,13 +15,6 @@ import static learn.refactoring.ch1.Utility.createStatementData;
 
 public class MethodRefactor {
 
-    static class StatementData {
-        String customer;
-        JSONArray performances;
-        double totalAmount;
-        double totalVolumeCredits;
-    }
-
     public static void main(String[] args) throws URISyntaxException, IOException {
         final var main = new MethodRefactor();
         var classLoader = MethodRefactor.class.getClassLoader();

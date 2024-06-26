@@ -4,12 +4,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Utility {
-    public static MethodRefactor.StatementData createStatementData(JSONArray invoice, JSONObject plays) {
+    public static StatementData createStatementData(JSONArray invoice, JSONObject plays) {
         var customer = invoice.getJSONObject(0).getString("customer");
         var performances = invoice.getJSONObject(0).getJSONArray("performances");
         performances = enrichPerformances(performances, plays);
 
-        var statementData = new MethodRefactor.StatementData();
+        var statementData = new StatementData();
         statementData.customer = customer;
         statementData.performances = performances;
         statementData.totalAmount = totalAmount(statementData);
@@ -28,7 +28,7 @@ public class Utility {
         return performances;
     }
 
-    private static double totalAmount(MethodRefactor.StatementData statementData) {
+    private static double totalAmount(StatementData statementData) {
         var result = 0.0;
 
         for (Object perfObj : statementData.performances) {
@@ -39,7 +39,7 @@ public class Utility {
         return result;
     }
 
-    private static double totalVolumeCredits(MethodRefactor.StatementData statementData) {
+    private static double totalVolumeCredits(StatementData statementData) {
         var result = 0.0;
         for (Object perfObj : statementData.performances) {
             var performance = (JSONObject) perfObj;
