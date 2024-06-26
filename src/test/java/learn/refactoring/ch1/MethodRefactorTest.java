@@ -1,7 +1,6 @@
 package learn.refactoring.ch1;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +13,7 @@ import java.util.Objects;
 class MethodRefactorTest {
 
     @Test
-    public void statement() throws URISyntaxException, IOException {
+    public void getStatement() throws URISyntaxException, IOException {
         var expected = """
                 Statement for BigCo
                   Hamlet: $650.00 (55 seats)]
