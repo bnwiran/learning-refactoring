@@ -43,10 +43,8 @@ public class MethodRefactor {
             totalAmount += amountFor(performance);
         }
 
-        var volumeCredits = totalVolumeCredits(invoice);
-
         result.append(String.format("Amount owed is %s\n", usd(totalAmount/100.0)));
-        result.append(String.format("You earned %f credits\n", volumeCredits));
+        result.append(String.format("You earned %f credits\n", totalVolumeCredits(invoice)));
 
         return result.toString();
     }
