@@ -39,7 +39,7 @@ public class MethodRefactor {
 
         for (Object perfObj : invoice.getJSONObject(0).getJSONArray("performances")) {
             var performance = (JSONObject) perfObj;
-            var thisAmount = amountFor(performance, playFor(performance));
+            var thisAmount = amountFor(performance);
 
             // add volume credits
             volumeCredits += Math.max(performance.getInt("audience") - 30, 0);
@@ -65,7 +65,7 @@ public class MethodRefactor {
         return plays.getJSONObject(aPerformance.getString("playID"));
     }
 
-    private int amountFor(JSONObject aPerformance, JSONObject play) {
+    private int amountFor(JSONObject aPerformance) {
         int result;
         switch (playFor(aPerformance).getString("type")) {
             case "tragedy" -> {
