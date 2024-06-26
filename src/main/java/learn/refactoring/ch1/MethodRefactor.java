@@ -30,7 +30,6 @@ public class MethodRefactor {
     }
 
     public String getStatement(JSONArray invoice) {
-        var totalAmount = 0;
         var result = new StringBuilder(String.format("Statement for %s\n", invoice.getJSONObject(0).getString("customer")));
 
         for (Object perfObj : invoice.getJSONObject(0).getJSONArray("performances")) {
@@ -40,13 +39,24 @@ public class MethodRefactor {
             result.append(String.format("  %s: %s (%d seats)]\n", playFor(performance).getString("name"),
                     usd(amountFor(performance)/100.0),
                     performance.getInt("audience")));
-            totalAmount += amountFor(performance);
         }
 
+        var totalAmount = totalAmount(invoice);
         result.append(String.format("Amount owed is %s\n", usd(totalAmount/100.0)));
         result.append(String.format("You earned %f credits\n", totalVolumeCredits(invoice)));
 
         return result.toString();
+    }
+
+    private double totalAmount(JSONArray invoice) {
+        var result = 0.0;
+
+        for (Object perfObj : invoice.getJSONObject(0).getJSONArray("performances")) {
+            var performance = (JSONObject) perfObj;
+            result += amountFor(performance);
+        }
+
+        return result;
     }
 
     private double totalVolumeCredits(JSONArray invoice) {
