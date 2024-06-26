@@ -67,7 +67,7 @@ public class MethodRefactor {
 
     private int amountFor(JSONObject aPerformance, JSONObject play) {
         int result;
-        switch (play.getString("type")) {
+        switch (playFor(aPerformance).getString("type")) {
             case "tragedy" -> {
                 result = 40_000;
                 if (aPerformance.getInt("audience") > 30) {
@@ -81,7 +81,8 @@ public class MethodRefactor {
                 }
                 result += 300 * aPerformance.getInt("audience");
             }
-            default -> throw new RuntimeException(String.format("Unknown type: %s", play.getString("type")));
+            default -> throw new RuntimeException(String.format("Unknown type: %s",
+                    playFor(aPerformance).getString("type")));
         }
         return result;
     }
