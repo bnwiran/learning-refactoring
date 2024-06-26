@@ -30,6 +30,10 @@ public class MethodRefactor {
     }
 
     public String getStatement(JSONArray invoice) {
+        return renderPlainText(invoice);
+    }
+
+    private String renderPlainText(JSONArray invoice) {
         var result = new StringBuilder(String.format("Statement for %s\n", invoice.getJSONObject(0).getString("customer")));
 
         for (Object perfObj : invoice.getJSONObject(0).getJSONArray("performances")) {
