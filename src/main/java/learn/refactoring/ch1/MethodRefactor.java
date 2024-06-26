@@ -31,21 +31,22 @@ public class MethodRefactor {
 
     public String getStatement(JSONArray invoice) {
         var totalAmount = 0;
-        var volumeCredits = 0.0;
-        var result = new StringBuilder(String.format("Statement for %s\n",
-                invoice.getJSONObject(0).getString("customer")));
+        var result = new StringBuilder(String.format("Statement for %s\n", invoice.getJSONObject(0).getString("customer")));
 
         for (Object perfObj : invoice.getJSONObject(0).getJSONArray("performances")) {
             var performance = (JSONObject) perfObj;
-
-            // add volume credits
-            volumeCredits += volumeCreditsFor(performance);
 
             // print line for this order
             result.append(String.format("  %s: %s (%d seats)]\n", playFor(performance).getString("name"),
                     usd(amountFor(performance)/100.0),
                     performance.getInt("audience")));
             totalAmount += amountFor(performance);
+        }
+
+        var volumeCredits = 0.0;
+        for (Object perfObj : invoice.getJSONObject(0).getJSONArray("performances")) {
+            var performance = (JSONObject) perfObj;
+            volumeCredits += volumeCreditsFor(performance);
         }
 
         result.append(String.format("Amount owed is %s\n", usd(totalAmount/100.0)));
