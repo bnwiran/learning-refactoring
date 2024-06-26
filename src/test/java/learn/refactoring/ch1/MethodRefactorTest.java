@@ -1,6 +1,7 @@
 package learn.refactoring.ch1;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -27,8 +28,10 @@ class MethodRefactorTest {
         var classLoader = MethodRefactor.class.getClassLoader();
         var invoicesResource = Objects.requireNonNull(classLoader.getResource("learn/refactoring/ch1/invoices.json"));
         var invoicesJSON = new JSONArray(Files.readString(Path.of(invoicesResource.toURI())));
+        var playsResource = Objects.requireNonNull(classLoader.getResource("learn/refactoring/ch1/plays.json"));
+        var plays = new JSONObject(Files.readString(Path.of(playsResource.toURI())));
 
-        var actual = main.getStatement(invoicesJSON);
+        var actual = main.getStatement(invoicesJSON, plays);
         Assertions.assertEquals(expected, actual);
     }
 }
