@@ -36,7 +36,7 @@ public class MethodRefactor {
         for (Object perfObj : invoice.getJSONObject(0).getJSONArray("performances")) {
             var performance = (JSONObject) perfObj;
             final var play = plays.getJSONObject(performance.getString("playID"));
-            var thisAmount = amountFor(play, performance);
+            var thisAmount = amountFor(performance, play);
 
             // add volume credits
             volumeCredits += Math.max(performance.getInt("audience") - 30, 0);
@@ -58,21 +58,21 @@ public class MethodRefactor {
         return result.toString();
     }
 
-    private int amountFor(JSONObject play, JSONObject performance) {
+    private int amountFor(JSONObject aPerformance, JSONObject play) {
         int result;
         switch (play.getString("type")) {
             case "tragedy" -> {
                 result = 40_000;
-                if (performance.getInt("audience") > 30) {
-                    result += 1000 * (performance.getInt("audience") -  30);
+                if (aPerformance.getInt("audience") > 30) {
+                    result += 1000 * (aPerformance.getInt("audience") -  30);
                 }
             }
             case "comedy" ->{
                 result= 30_000;
-                if (performance.getInt("audience") > 20) {
-                    result += 10_000 + 500 * (performance.getInt("audience") -  20);
+                if (aPerformance.getInt("audience") > 20) {
+                    result += 10_000 + 500 * (aPerformance.getInt("audience") -  20);
                 }
-                result += 300 * performance.getInt("audience");
+                result += 300 * aPerformance.getInt("audience");
             }
             default -> throw new RuntimeException(String.format("Unknown type: %s", play.getString("type")));
         }
