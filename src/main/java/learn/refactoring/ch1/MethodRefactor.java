@@ -13,7 +13,12 @@ import java.util.Objects;
 
 public class MethodRefactor {
 
-    record StatementData(String customer, JSONArray performances){}
+    static class StatementData {
+        String customer;
+        JSONArray performances;
+        double totalAmount;
+        double totalVolumeCredits;
+    }
 
     private final JSONObject plays;
 
@@ -35,7 +40,9 @@ public class MethodRefactor {
         var customer = invoice.getJSONObject(0).getString("customer");
         var performances = enrichPerformances(invoice.getJSONObject(0).getJSONArray("performances"));
 
-        var statementData = new StatementData(customer, performances);
+        var statementData = new StatementData();
+        statementData.customer = customer;
+        statementData.performances = performances;
         return renderPlainText(statementData);
     }
 
