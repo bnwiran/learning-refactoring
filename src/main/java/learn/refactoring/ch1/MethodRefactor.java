@@ -40,6 +40,11 @@ public class MethodRefactor {
     }
 
     private JSONArray enrichPerformances(JSONArray performances) {
+        var length = performances.length();
+        for (int i = 0; i < length; i++) {
+            var performance = performances.getJSONObject(i);
+            performance.put("play", playFor(performance));
+        }
         return performances;
     }
 
@@ -50,7 +55,7 @@ public class MethodRefactor {
             var performance = (JSONObject) perfObj;
 
             // print line for this order
-            result.append(String.format("  %s: %s (%d seats)\n", playFor(performance).getString("name"),
+            result.append(String.format("  %s: %s (%d seats)\n", performance.getJSONObject("play").getString("name"),
                     usd(amountFor(performance)/100.0),
                     performance.getInt("audience")));
         }
@@ -92,7 +97,7 @@ public class MethodRefactor {
     private double volumeCreditsFor(JSONObject aPerformance) {
         var result = Math.max(aPerformance.getDouble("audience") - 30, 0);
 
-        if ("comedy".equals(playFor(aPerformance).getString("type"))) {
+        if ("comedy".equals(aPerformance.getJSONObject("play").getString("type"))) {
             result += Math.floor(aPerformance.getDouble("audience") / 5);
         }
 
@@ -105,7 +110,7 @@ public class MethodRefactor {
 
     private int amountFor(JSONObject aPerformance) {
         int result;
-        switch (playFor(aPerformance).getString("type")) {
+        switch (aPerformance.getJSONObject("play").getString("type")) {
             case "tragedy" -> {
                 result = 40_000;
                 if (aPerformance.getInt("audience") > 30) {
@@ -120,7 +125,7 @@ public class MethodRefactor {
                 result += 300 * aPerformance.getInt("audience");
             }
             default -> throw new RuntimeException(String.format("Unknown type: %s",
-                    playFor(aPerformance).getString("type")));
+                    aPerformance.getJSONObject("play").getString("type")));
         }
         return result;
     }
