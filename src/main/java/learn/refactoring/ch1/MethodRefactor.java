@@ -36,7 +36,7 @@ public class MethodRefactor {
             var performance = (JSONObject) perfObj;
 
             // print line for this order
-            result.append(String.format("  %s: %s (%d seats)]\n", playFor(performance).getString("name"),
+            result.append(String.format("  %s: %s (%d seats)\n", playFor(performance).getString("name"),
                     usd(amountFor(performance)/100.0),
                     performance.getInt("audience")));
         }
