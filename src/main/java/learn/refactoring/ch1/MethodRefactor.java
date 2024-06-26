@@ -84,7 +84,7 @@ public class MethodRefactor {
         var result = 0.0;
         for (Object perfObj : statementData.performances) {
             var performance = (JSONObject) perfObj;
-            result += volumeCreditsFor(performance);
+            result += performance.getDouble("volumeCredits");
         }
         return result;
     }
