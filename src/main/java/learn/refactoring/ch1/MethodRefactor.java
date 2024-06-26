@@ -43,18 +43,18 @@ public class MethodRefactor {
 
             // print line for this order
             result.append(String.format("  %s: %s (%d seats)]\n", playFor(performance).getString("name"),
-                    format(amountFor(performance)/100.0),
+                    usd(amountFor(performance)/100.0),
                     performance.getInt("audience")));
             totalAmount += amountFor(performance);
         }
 
-        result.append(String.format("Amount owed is %s\n", format(totalAmount/100.0)));
+        result.append(String.format("Amount owed is %s\n", usd(totalAmount/100.0)));
         result.append(String.format("You earned %f credits\n", volumeCredits));
 
         return result.toString();
     }
 
-    private String format(double aNumber) {
+    private String usd(double aNumber) {
         var locale = new Locale.Builder().setLanguage("en").setRegion("US").build();
         var currencyFormatter = NumberFormat.getCurrencyInstance(locale);
 
