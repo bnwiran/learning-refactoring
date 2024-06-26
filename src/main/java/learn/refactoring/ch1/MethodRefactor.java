@@ -37,6 +37,10 @@ public class MethodRefactor {
     }
 
     public String getStatement(JSONArray invoice) {
+        return renderPlainText(createStatementData(invoice));
+    }
+
+    private StatementData createStatementData(JSONArray invoice) {
         var customer = invoice.getJSONObject(0).getString("customer");
         var performances = enrichPerformances(invoice.getJSONObject(0).getJSONArray("performances"));
 
@@ -45,8 +49,7 @@ public class MethodRefactor {
         statementData.performances = performances;
         statementData.totalAmount = totalAmount(statementData);
         statementData.totalVolumeCredits = totalVolumeCredits(statementData);
-
-        return renderPlainText(statementData);
+        return statementData;
     }
 
     private JSONArray enrichPerformances(JSONArray performances) {
