@@ -13,19 +13,23 @@ import java.util.Objects;
 
 public class MethodRefactor {
 
+    private final JSONObject plays;
+
     public static void main(String[] args) throws URISyntaxException, IOException {
         final var main = new MethodRefactor();
         var classLoader = MethodRefactor.class.getClassLoader();
         var invoicesResource = Objects.requireNonNull(classLoader.getResource("learn/refactoring/ch1/invoices.json"));
         var invoicesJSON = new JSONArray(Files.readString(Path.of(invoicesResource.toURI())));
 
-        var playsResource = Objects.requireNonNull(classLoader.getResource("learn/refactoring/ch1/plays.json"));
-        var plays = new JSONObject(Files.readString(Path.of(playsResource.toURI())));
-
-        System.out.println(main.getStatement(invoicesJSON, plays));
+        System.out.println(main.getStatement(invoicesJSON));
     }
 
-    public String getStatement(JSONArray invoice, JSONObject plays) {
+    public MethodRefactor() throws URISyntaxException, IOException {
+        var playsResource = Objects.requireNonNull(getClass().getClassLoader().getResource("learn/refactoring/ch1/plays.json"));
+        plays = new JSONObject(Files.readString(Path.of(playsResource.toURI())));
+    }
+
+    public String getStatement(JSONArray invoice) {
         var locale = new Locale.Builder().setLanguage("en").setRegion("US").build();
         var currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         var totalAmount = 0;

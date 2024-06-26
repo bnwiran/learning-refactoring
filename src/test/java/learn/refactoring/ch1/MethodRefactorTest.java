@@ -29,10 +29,7 @@ class MethodRefactorTest {
         var invoicesResource = Objects.requireNonNull(classLoader.getResource("learn/refactoring/ch1/invoices.json"));
         var invoicesJSON = new JSONArray(Files.readString(Path.of(invoicesResource.toURI())));
 
-        var playsResource = Objects.requireNonNull(classLoader.getResource("learn/refactoring/ch1/plays.json"));
-        var plays = new JSONObject(Files.readString(Path.of(playsResource.toURI())));
-
-        var actual = main.getStatement(invoicesJSON, plays);
+        var actual = main.getStatement(invoicesJSON);
         Assertions.assertEquals(expected, actual);
     }
 }
