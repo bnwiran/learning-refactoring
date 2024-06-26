@@ -33,10 +33,14 @@ public class MethodRefactor {
 
     public String getStatement(JSONArray invoice) {
         var customer = invoice.getJSONObject(0).getString("customer");
-        var performances = invoice.getJSONObject(0).getJSONArray("performances");
+        var performances = enrichPerformances(invoice.getJSONObject(0).getJSONArray("performances"));
 
         var statementData = new StatementData(customer, performances);
         return renderPlainText(statementData);
+    }
+
+    private JSONArray enrichPerformances(JSONArray performances) {
+        return performances;
     }
 
     private String renderPlainText(StatementData statementData) {
