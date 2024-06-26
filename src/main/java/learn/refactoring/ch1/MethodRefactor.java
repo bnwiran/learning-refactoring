@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class MethodRefactor {
 
-    record StatementData(String customer){}
+    record StatementData(String customer, JSONArray performances){}
 
     private final JSONObject plays;
 
@@ -32,14 +32,17 @@ public class MethodRefactor {
     }
 
     public String getStatement(JSONArray invoice) {
-        var statementData = new StatementData(invoice.getJSONObject(0).getString("customer"));
-        return renderPlainText(statementData, invoice);
+        var customer = invoice.getJSONObject(0).getString("customer");
+        var performances = invoice.getJSONObject(0).getJSONArray("performances");
+
+        var statementData = new StatementData(customer, performances);
+        return renderPlainText(statementData);
     }
 
-    private String renderPlainText(StatementData statementData, JSONArray invoice) {
+    private String renderPlainText(StatementData statementData) {
         var result = new StringBuilder(String.format("Statement for %s\n", statementData.customer));
 
-        for (Object perfObj : invoice.getJSONObject(0).getJSONArray("performances")) {
+        for (Object perfObj : statementData.performances) {
             var performance = (JSONObject) perfObj;
 
             // print line for this order
@@ -48,17 +51,17 @@ public class MethodRefactor {
                     performance.getInt("audience")));
         }
 
-        var totalAmount = totalAmount(invoice);
+        var totalAmount = totalAmount(statementData);
         result.append(String.format("Amount owed is %s\n", usd(totalAmount/100.0)));
-        result.append(String.format("You earned %f credits\n", totalVolumeCredits(invoice)));
+        result.append(String.format("You earned %f credits\n", totalVolumeCredits(statementData)));
 
         return result.toString();
     }
 
-    private double totalAmount(JSONArray invoice) {
+    private double totalAmount(StatementData statementData) {
         var result = 0.0;
 
-        for (Object perfObj : invoice.getJSONObject(0).getJSONArray("performances")) {
+        for (Object perfObj : statementData.performances) {
             var performance = (JSONObject) perfObj;
             result += amountFor(performance);
         }
@@ -66,9 +69,9 @@ public class MethodRefactor {
         return result;
     }
 
-    private double totalVolumeCredits(JSONArray invoice) {
+    private double totalVolumeCredits(StatementData statementData) {
         var result = 0.0;
-        for (Object perfObj : invoice.getJSONObject(0).getJSONArray("performances")) {
+        for (Object perfObj : statementData.performances) {
             var performance = (JSONObject) perfObj;
             result += volumeCreditsFor(performance);
         }
