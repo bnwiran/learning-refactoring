@@ -43,16 +43,21 @@ public class MethodRefactor {
             totalAmount += amountFor(performance);
         }
 
-        var volumeCredits = 0.0;
-        for (Object perfObj : invoice.getJSONObject(0).getJSONArray("performances")) {
-            var performance = (JSONObject) perfObj;
-            volumeCredits += volumeCreditsFor(performance);
-        }
+        var volumeCredits = totalVolumeCredits(invoice);
 
         result.append(String.format("Amount owed is %s\n", usd(totalAmount/100.0)));
         result.append(String.format("You earned %f credits\n", volumeCredits));
 
         return result.toString();
+    }
+
+    private double totalVolumeCredits(JSONArray invoice) {
+        var result = 0.0;
+        for (Object perfObj : invoice.getJSONObject(0).getJSONArray("performances")) {
+            var performance = (JSONObject) perfObj;
+            result += volumeCreditsFor(performance);
+        }
+        return result;
     }
 
     private String usd(double aNumber) {
