@@ -41,11 +41,7 @@ public class MethodRefactor {
             var performance = (JSONObject) perfObj;
 
             // add volume credits
-            volumeCredits += Math.max(performance.getInt("audience") - 30, 0);
-            // add extra credit for every ten comedy attendees
-            if ("comedy".equals(playFor(performance).getString("type"))) {
-                volumeCredits += Math.floor(performance.getDouble("audience") / 5);
-            }
+            volumeCredits += volumeCreditsFor(performance);
 
             // print line for this order
             result.append(String.format("  %s: %s (%d seats)]\n", playFor(performance).getString("name"),
@@ -58,6 +54,16 @@ public class MethodRefactor {
         result.append(String.format("You earned %f credits\n", volumeCredits));
 
         return result.toString();
+    }
+
+    private double volumeCreditsFor(JSONObject aPerformance) {
+        var result = Math.max(aPerformance.getDouble("audience") - 30, 0);
+
+        if ("comedy".equals(playFor(aPerformance).getString("type"))) {
+            result += Math.floor(aPerformance.getDouble("audience") / 5);
+        }
+
+        return result;
     }
 
     private JSONObject playFor(JSONObject aPerformance) {
