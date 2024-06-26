@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class MethodRefactor {
 
-    record StatementData(){}
+    record StatementData(String customer){}
 
     private final JSONObject plays;
 
@@ -32,12 +32,12 @@ public class MethodRefactor {
     }
 
     public String getStatement(JSONArray invoice) {
-        var statementData = new StatementData();
+        var statementData = new StatementData(invoice.getJSONObject(0).getString("customer"));
         return renderPlainText(statementData, invoice);
     }
 
     private String renderPlainText(StatementData statementData, JSONArray invoice) {
-        var result = new StringBuilder(String.format("Statement for %s\n", invoice.getJSONObject(0).getString("customer")));
+        var result = new StringBuilder(String.format("Statement for %s\n", statementData.customer));
 
         for (Object perfObj : invoice.getJSONObject(0).getJSONArray("performances")) {
             var performance = (JSONObject) perfObj;
