@@ -13,6 +13,8 @@ import java.util.Objects;
 
 public class MethodRefactor {
 
+    record StatementData(){}
+
     private final JSONObject plays;
 
     public static void main(String[] args) throws URISyntaxException, IOException {
@@ -30,10 +32,11 @@ public class MethodRefactor {
     }
 
     public String getStatement(JSONArray invoice) {
-        return renderPlainText(invoice);
+        var statementData = new StatementData();
+        return renderPlainText(statementData, invoice);
     }
 
-    private String renderPlainText(JSONArray invoice) {
+    private String renderPlainText(StatementData statementData, JSONArray invoice) {
         var result = new StringBuilder(String.format("Statement for %s\n", invoice.getJSONObject(0).getString("customer")));
 
         for (Object perfObj : invoice.getJSONObject(0).getJSONArray("performances")) {
