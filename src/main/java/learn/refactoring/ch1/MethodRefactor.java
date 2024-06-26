@@ -45,6 +45,7 @@ public class MethodRefactor {
             var performance = performances.getJSONObject(i);
             performance.put("play", playFor(performance));
             performance.put("amount", amountFor(performance));
+            performance.put("volumeCredits", volumeCreditsFor(performance));
         }
         return performances;
     }
