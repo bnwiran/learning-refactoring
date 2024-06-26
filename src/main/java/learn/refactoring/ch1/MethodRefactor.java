@@ -35,18 +35,17 @@ public class MethodRefactor {
 
         for (Object perfObj : invoice.getJSONObject(0).getJSONArray("performances")) {
             var performance = (JSONObject) perfObj;
-            final var play = playFor(plays, performance);
-            var thisAmount = amountFor(performance, play);
+            var thisAmount = amountFor(performance, playFor(plays, performance));
 
             // add volume credits
             volumeCredits += Math.max(performance.getInt("audience") - 30, 0);
             // add extra credit for every ten comedy attendees
-            if ("comedy".equals(play.getString("type"))) {
+            if ("comedy".equals(playFor(plays, performance).getString("type"))) {
                 volumeCredits += Math.floor(performance.getDouble("audience") / 5);
             }
 
             // print line for this order
-            result.append(String.format("  %s: %s (%d seats)]\n", play.getString("name"),
+            result.append(String.format("  %s: %s (%d seats)]\n", playFor(plays, performance).getString("name"),
                     currencyFormatter.format(thisAmount/100.0),
                     performance.getInt("audience")));
             totalAmount += thisAmount;
