@@ -30,8 +30,6 @@ public class MethodRefactor {
     }
 
     public String getStatement(JSONArray invoice) {
-        var locale = new Locale.Builder().setLanguage("en").setRegion("US").build();
-        var currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         var totalAmount = 0;
         var volumeCredits = 0.0;
         var result = new StringBuilder(String.format("Statement for %s\n",
@@ -45,15 +43,22 @@ public class MethodRefactor {
 
             // print line for this order
             result.append(String.format("  %s: %s (%d seats)]\n", playFor(performance).getString("name"),
-                    currencyFormatter.format(amountFor(performance)/100.0),
+                    format(amountFor(performance)/100.0),
                     performance.getInt("audience")));
             totalAmount += amountFor(performance);
         }
 
-        result.append(String.format("Amount owed is %s\n", currencyFormatter.format(totalAmount/100.0)));
+        result.append(String.format("Amount owed is %s\n", format(totalAmount/100.0)));
         result.append(String.format("You earned %f credits\n", volumeCredits));
 
         return result.toString();
+    }
+
+    private String format(double aNumber) {
+        var locale = new Locale.Builder().setLanguage("en").setRegion("US").build();
+        var currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+
+        return currencyFormatter.format(aNumber);
     }
 
     private double volumeCreditsFor(JSONObject aPerformance) {
