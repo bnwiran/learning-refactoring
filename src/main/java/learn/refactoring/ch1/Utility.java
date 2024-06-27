@@ -30,7 +30,13 @@ public class Utility {
     }
 
     private static PerformanceCalculator createPerformanceCalculator(JSONObject performance, JSONObject aPlay) {
-        return new PerformanceCalculator(performance, aPlay);
+
+        return switch (aPlay.getString("type")) {
+            case "tragedy" -> new TragedyCalculator(performance, aPlay);
+            case "comedy" -> new ComedyCalculator(performance, aPlay);
+            default -> throw new RuntimeException(String.format("Unknown type: %s",
+                    aPlay.getString("type")));
+        };
     }
 
     private static double totalAmount(StatementData statementData) {
