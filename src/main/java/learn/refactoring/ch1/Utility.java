@@ -24,7 +24,7 @@ public class Utility {
             var calculator = new PerformanceCalculator(performance, playFor(performance, plays));
             performance.put("play", calculator.play());
             performance.put("amount", calculator.amount());
-            performance.put("volumeCredits", volumeCreditsFor(performance));
+            performance.put("volumeCredits", calculator.volumeCredits());
         }
         return performances;
     }
@@ -46,16 +46,6 @@ public class Utility {
             var performance = (JSONObject) perfObj;
             result += performance.getDouble("volumeCredits");
         }
-        return result;
-    }
-
-    private static double volumeCreditsFor(JSONObject aPerformance) {
-        var result = Math.max(aPerformance.getDouble("audience") - 30, 0);
-
-        if ("comedy".equals(aPerformance.getJSONObject("play").getString("type"))) {
-            result += Math.floor(aPerformance.getDouble("audience") / 5);
-        }
-
         return result;
     }
 
