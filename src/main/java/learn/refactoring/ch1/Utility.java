@@ -21,12 +21,16 @@ public class Utility {
         var length = performances.length();
         for (int i = 0; i < length; i++) {
             var performance = performances.getJSONObject(i);
-            var calculator = new PerformanceCalculator(performance, playFor(performance, plays));
+            var calculator = createPerformanceCalculator(performance, playFor(performance, plays));
             performance.put("play", calculator.play());
             performance.put("amount", calculator.amount());
             performance.put("volumeCredits", calculator.volumeCredits());
         }
         return performances;
+    }
+
+    private static PerformanceCalculator createPerformanceCalculator(JSONObject performance, JSONObject aPlay) {
+        return new PerformanceCalculator(performance, aPlay);
     }
 
     private static double totalAmount(StatementData statementData) {
