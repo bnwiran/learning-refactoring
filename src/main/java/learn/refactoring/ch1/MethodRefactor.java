@@ -30,6 +30,10 @@ public class MethodRefactor {
         return renderPlainText(createStatementData(invoice, plays));
     }
 
+    public String htmlStatement (JSONArray invoice, JSONObject plays) {
+        return renderHtml(createStatementData(invoice, plays));
+    }
+
     private String renderPlainText(StatementData statementData) {
         var result = new StringBuilder(String.format("Statement for %s\n", statementData.customer));
 
@@ -45,6 +49,26 @@ public class MethodRefactor {
         var totalAmount = statementData.totalAmount;
         result.append(String.format("Amount owed is %s\n", usd(totalAmount/100.0)));
         result.append(String.format("You earned %f credits\n", statementData.totalVolumeCredits));
+
+        return result.toString();
+    }
+
+    private String renderHtml(StatementData data) {
+        var result = new StringBuilder(String.format("<h1>Statement for %s</h1>\n", data.customer));
+        result.append("<table>\n");
+        result.append("<tr><th>play</th><th>seats</th><th>cost</th></tr>");
+
+        for (var perfObj : data.performances) {
+            var performance = (JSONObject) perfObj;
+
+            result.append(String.format("  <tr><td>%s</td><td>%d</td>",
+                    performance.getJSONObject("play").getString("name"),
+                    performance.getInt("audience")));
+            result.append(String.format("<td>%s</td></tr>\n", usd(performance.getDouble("amount")/100.0)));
+        }
+        result.append("</table>\n");
+        result.append(String.format("<p>Amount owed is <em>%s</em></p>\n", usd(data.totalAmount)));
+        result.append(String.format("<p>You earned <em>%f</em> credits</p>\n", data.totalVolumeCredits));
 
         return result.toString();
     }
