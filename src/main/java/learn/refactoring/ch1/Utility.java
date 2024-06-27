@@ -21,8 +21,8 @@ public class Utility {
         var length = performances.length();
         for (int i = 0; i < length; i++) {
             var performance = performances.getJSONObject(i);
-            var calculator = new PerformanceCalculator(performance);
-            performance.put("play", playFor(performance, plays));
+            var calculator = new PerformanceCalculator(performance, playFor(performance, plays));
+            performance.put("play", calculator.play());
             performance.put("amount", amountFor(performance));
             performance.put("volumeCredits", volumeCreditsFor(performance));
         }
