@@ -23,7 +23,7 @@ public class Utility {
             var performance = performances.getJSONObject(i);
             var calculator = new PerformanceCalculator(performance, playFor(performance, plays));
             performance.put("play", calculator.play());
-            performance.put("amount", amountFor(performance));
+            performance.put("amount", calculator.amount());
             performance.put("volumeCredits", volumeCreditsFor(performance));
         }
         return performances;
@@ -61,27 +61,5 @@ public class Utility {
 
     private static JSONObject playFor(JSONObject aPerformance, JSONObject plays) {
         return plays.getJSONObject(aPerformance.getString("playID"));
-    }
-
-    private static int amountFor(JSONObject aPerformance) {
-        int result;
-        switch (aPerformance.getJSONObject("play").getString("type")) {
-            case "tragedy" -> {
-                result = 40_000;
-                if (aPerformance.getInt("audience") > 30) {
-                    result += 1000 * (aPerformance.getInt("audience") -  30);
-                }
-            }
-            case "comedy" ->{
-                result= 30_000;
-                if (aPerformance.getInt("audience") > 20) {
-                    result += 10_000 + 500 * (aPerformance.getInt("audience") -  20);
-                }
-                result += 300 * aPerformance.getInt("audience");
-            }
-            default -> throw new RuntimeException(String.format("Unknown type: %s",
-                    aPerformance.getJSONObject("play").getString("type")));
-        }
-        return result;
     }
 }
