@@ -4,9 +4,9 @@ public class Producer {
     private final String name;
     private final Province province;
     private double cost;
-    private double production;
+    private int production;
 
-    Producer(String name, Province province, double cost, double production) {
+    Producer(String name, Province province, double cost, int production) {
         this.name = name;
         this.province = province;
         this.cost = cost;
@@ -26,11 +26,11 @@ public class Producer {
         return this;
     }
 
-    public double production() {
+    public int production() {
         return production;
     }
 
-    public Producer production(double newProduction) {
+    public Producer production(int newProduction) {
         province.addProduction(newProduction - production);
         production = newProduction;
         return this;

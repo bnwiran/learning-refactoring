@@ -1,15 +1,23 @@
 package learn.refactoring.ch4;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ProvinceTest {
 
+    private Province province;
+
+    @BeforeEach
+    public void setUp() {
+        province = getSampleProvince();
+    }
+
     @Test
     public void shortfall() {
-        final var province = getSampleProvince();
-
-        Assertions.assertEquals(province.shortfall(), 5);
+        assertEquals(5, province.shortfall());
     }
 
     private static Province getSampleProvince() {
