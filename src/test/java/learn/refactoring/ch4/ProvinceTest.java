@@ -38,6 +38,13 @@ public class ProvinceTest {
         assertEquals(0, noProducers.profit());
     }
 
+    @Test
+    public void zeroDemand() {
+        asia.demand(0);
+        assertEquals(-25, asia.shortfall());
+        assertEquals(0, asia.profit());
+    }
+
     private static Province getSampleProvince(String name) {
         var demand = 30;
         var price = 20;
