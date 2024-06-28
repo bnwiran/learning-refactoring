@@ -25,6 +25,13 @@ public class ProvinceTest {
         assertEquals(230, province.profit());
     }
 
+    @Test
+    public void changeProduction() {
+        province.producers().getFirst().production(20);
+        assertEquals(-6, province.shortfall());
+        assertEquals(292, province.profit());
+    }
+
     private static Province getSampleProvince() {
         var name = "Asia";
         var demand = 30;

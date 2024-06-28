@@ -23,8 +23,8 @@ public class Province {
         return name;
     }
 
-    public Iterator<Producer> producers() {
-        return producers.iterator();
+    public List<Producer> producers() {
+        return producers;
     }
 
     public void addProducer(String name, double cost, int production) {
