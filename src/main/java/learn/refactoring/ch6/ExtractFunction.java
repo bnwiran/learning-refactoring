@@ -6,7 +6,10 @@ public class ExtractFunction {
         printBanner();
         var outstanding = calculateOutstanding();
 
-        //print details
+        printDetails(invoice, outstanding);
+    }
+
+    private void printDetails(Invoice invoice, double outstanding) {
         System.out.printf("name: %s\n", invoice.customer());
         System.out.printf("amount: %f\n", outstanding);
     }
